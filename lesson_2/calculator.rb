@@ -9,12 +9,13 @@ operation = gets.chomp
 
 case operation
 when "add"
-  puts num1 + num2
+  result = num1 + num2
 when "subtract"
-  puts num1 - num2
+  result = num1 - num2
 when "multiply"
-  puts num1 * num2
+  result = num1 * num2
 when "divide"
-  puts num1 / num2
+  result = num1 / num2
 end
 
+puts result
