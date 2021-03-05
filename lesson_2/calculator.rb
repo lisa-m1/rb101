@@ -15,7 +15,7 @@ when "subtract"
 when "multiply"
   result = num1 * num2
 when "divide"
-  result = num1 / num2
+  result = num1.to_f / num2.to_f
 end
 
 puts result
