@@ -3,6 +3,13 @@ def prompt(message)
 end
 
 def valid_number?(num)
+  unless num == '0' 
+    num.to_i != 0
+  else true
+  end
+end
+
+def valid_denominator?(num)
   num.to_i != 0
 end
 
@@ -32,7 +39,7 @@ loop do
   end
 end
 
-prompt("Hi, #{name.capitalize!}!")
+prompt("Hi, #{name.capitalize}!")
 
 loop do
   num1 = ''
@@ -85,16 +92,25 @@ loop do
 
   prompt("#{operation_to_message(operator)} the two numbers...")
 
-  result = case operator
-           when "1"
-             num1 + num2
-           when "2"
-             num1 - num2
-           when "3"
-             num1 * num2
-           when "4"
-             num1.to_f / num2.to_f
-           end
+  result = ""
+  case operator
+  when "1"
+    result = num1 + num2
+  when "2"
+    result = num1 - num2
+  when "3"
+    result = num1 * num2
+  when "4"
+    loop do
+      if num2.to_i == 0
+        puts "This is not a valid denominator. Please enter a non-zero number"
+        num2 = gets.chomp
+      else 
+        result = num1.to_f / num2.to_f
+        break
+      end
+    end
+  end
 
   prompt("The result is #{result}")
 
