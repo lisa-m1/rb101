@@ -30,7 +30,8 @@ loop do
 
   annual_rate = ''
   loop do
-    prompt("Please enter the interest rate with one decimal place (3.5 for 3.5%; 5.0 for 5%).")
+    prompt("Please enter the interest rate with one decimal place")
+    prompt("(3.5 for 3.5%; 5.0 for 5%)")
     annual_rate = gets.chomp
     if valid_float?(annual_rate)
       annual_rate = annual_rate.to_f
