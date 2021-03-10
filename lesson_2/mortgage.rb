@@ -1,3 +1,6 @@
+MONTHS_IN_A_YEAR = 12
+INVALID_NUMBER = "This isn't a valid positive number. Please try again."
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -10,55 +13,74 @@ def valid_float?(num)
   num.to_f.to_s == num.to_s && num.to_f > 0
 end
 
-MONTHS_IN_A_YEAR = 12
-INVALID_NUMBER = "This isn't a valid positive number. Please try again."
+def get_loan
+  amount = ''
+  loop do
+    prompt("Please enter the loan amount rounded to the nearest dollar:")
+    amount = gets.chomp
+    if valid_number?(amount)
+      amount = amount.to_i
+      break
+    else
+      prompt(INVALID_NUMBER)
+    end
+  end
+  amount.to_i
+end
+
+def get_apr
+  apr = ''
+  loop do
+    prompt("Please enter the interest rate with one decimal place")
+    prompt("(3.5 for 3.5%; 5.0 for 5%)")
+    apr = gets.chomp
+    if valid_float?(apr)
+      apr = apr.to_f
+      break
+    else
+      prompt(INVALID_NUMBER)
+    end
+  end
+  apr /= 100
+end
+
+def get_years
+  years = ''
+  loop do
+    prompt("Please enter your loan duration in years:")
+    years = gets.chomp
+    if valid_number?(years)
+      years = years.to_i
+      break
+    else
+      prompt(INVALID_NUMBER)
+    end
+  end
+  years
+end
+
+def get_calc_again
+  another_calc = ''
+  loop do
+    prompt("Do you want to perfom another calculation? (y/n)")
+    another_calc = gets.chomp
+    if %w(y n).include?(another_calc.downcase)
+      break
+    else
+      prompt('Please enter y or n.')
+    end
+  end
+  another_calc.downcase
+end
 
 prompt("Welcome to the mortgage calculator!")
 
 loop do
-  loan_amount = ''
-  loop do
-    prompt("Please enter the loan amount rounded to the nearest dollar:")
-    loan_amount = gets.chomp
-    if valid_number?(loan_amount)
-      loan_amount = loan_amount.to_i
-      break
-    else
-      prompt(INVALID_NUMBER)
-    end
-  end
+  loan_amount = get_loan
 
-  annual_rate = ''
-  loop do
-    prompt("Please enter the interest rate with one decimal place")
-    prompt("(3.5 for 3.5%; 5.0 for 5%)")
-    annual_rate = gets.chomp
-    if valid_float?(annual_rate)
-      annual_rate = annual_rate.to_f
-      break
-    else
-      prompt(INVALID_NUMBER)
-    end
-  end
+  monthly_rate = get_apr / MONTHS_IN_A_YEAR
 
-  loan_duration_years = ''
-  loop do
-    prompt("Please enter your loan duration in years:")
-    loan_duration_years = gets.chomp
-    if valid_number?(loan_duration_years)
-      loan_duration_years = loan_duration_years.to_i
-      break
-    else
-      prompt(INVALID_NUMBER)
-    end
-  end
-
-  loan_amount = loan_amount.to_i
-
-  annual_rate /= 100
-  monthly_rate = annual_rate / MONTHS_IN_A_YEAR
-
-  loan_duration_months = loan_duration_years * MONTHS_IN_A_YEAR
+  loan_duration_months = get_years * MONTHS_IN_A_YEAR
 
   monthly_payment = loan_amount *
                     (monthly_rate / 
@@ -66,7 +88,6 @@ loop do
 
   puts "Yout monthly payment is #{monthly_payment.round(2)}"
 
-  prompt("Do you want to perfom another calculation? (y/n)")
-  calc_again = gets.chomp
-  break unless calc_again.downcase.start_with?('y')
+  calc_again = get_calc_again
+  break unless calc_again == 'y'
 end
