@@ -80,11 +80,10 @@ loop do
 
   monthly_rate = get_apr / MONTHS_IN_A_YEAR
 
-  loan_duration_months = get_years * MONTHS_IN_A_YEAR
+  months = get_years * MONTHS_IN_A_YEAR
 
   monthly_payment = loan_amount *
-                    (monthly_rate / 
-                    (1 - (1 + monthly_rate)**(-loan_duration_months)))
+                    (monthly_rate / (1 - (1 + monthly_rate)**(-months)))
 
   puts "Yout monthly payment is #{monthly_payment.round(2)}"
 
