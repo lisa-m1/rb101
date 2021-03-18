@@ -1,4 +1,12 @@
-VALID_CHOICES = %w(rock paper scissors spock lizard)
+VALID_CHOICES = {
+  "r" => "rock",
+  "p" => "paper",
+  "sc" => "scissors",
+  "sp" => "spock",
+  "l" => "lizard"
+}
+
+VALID_CHOICES_PROMPT = %w((r)ock (p)aper (sc)issors (sp)ock (l)izard)
 
 WINNING_MOVES = {
   'rock' => %w(scissors lizard),
@@ -7,6 +15,8 @@ WINNING_MOVES = {
   'lizard' => %w(spock paper),
   'spock' => %w(rock scissors)
 }
+
+WIN_SCORE = 5
 
 score = {
   player: 0,
@@ -17,13 +27,20 @@ def prompt(message)
   puts "=> #{message}"
 end
 
+def clear_screen
+  system('clear') || system('cls')
+end
+
 def get_user_choice
   user_choice = ''
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+    prompt("Choose one: #{VALID_CHOICES_PROMPT.join(', ')}")
     user_choice = gets.chomp.downcase
 
-    if VALID_CHOICES.include?(user_choice)
+    if VALID_CHOICES.values.include?(user_choice)
+      break
+    elsif VALID_CHOICES.keys.include?(user_choice)
+      user_choice = VALID_CHOICES[user_choice]
       break
     else
       prompt("That's not a valid choice.")
@@ -65,13 +82,13 @@ def reset_scores(score)
 end
 
 def grand_winner?(score)
-  score[:player] == 5 || score[:computer] == 5
+  score[:player] == WIN_SCORE || score[:computer] == WIN_SCORE
 end
 
 def display_grand_winner(score)
-  if score[:player] == 5
+  if score[:player] == WIN_SCORE
     prompt("You are the grand winner")
-  elsif score[:computer] == 5
+  elsif score[:computer] == WIN_SCORE
     prompt("The computer is the grand winner")
   end
 end
@@ -97,7 +114,7 @@ while play_again
 
   loop do
     choice = get_user_choice
-    computer_choice = VALID_CHOICES.sample
+    computer_choice = VALID_CHOICES.values.sample
 
     prompt("You chose #{choice}, the computer chose #{computer_choice}")
 
@@ -110,6 +127,8 @@ while play_again
       reset_scores(score)
       break
     end
+    sleep 2
+    clear_screen
   end
 
   play_again = play_again?
